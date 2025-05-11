@@ -32,6 +32,7 @@ export default function Page() {
         <button
           type="button"
           onClick={async () => {
+            setHasSentError(false);
             const res = await fetch("/api/example-api");
             if (!res.ok) {
               setHasSentError(true);
@@ -40,9 +41,25 @@ export default function Page() {
           }}
         >
           <span>
-            Throw Sample Error
+            Throw Sample Error (call API route on Nodejs runtime)
           </span>
         </button>
+
+          <button
+              type="button"
+              onClick={async () => {
+                  setHasSentError(false);
+                  const res = await fetch("/api/example-edge-api");
+                  if (!res.ok) {
+                      setHasSentError(true);
+                      throw new HBExampleFrontendError("This error is raised on the frontend of the example page.");
+                  }
+              }}
+          >
+          <span>
+            Throw Sample Error (call API route on Edge runtime)
+          </span>
+          </button>
 
         {hasSentError ? (
           <p className="success">
@@ -51,12 +68,6 @@ export default function Page() {
         ) : (
           <div className="success_placeholder" />
         )}
-
-        <div className="flex-spacer" />
-
-        <p className="description">
-          Adblockers will prevent errors from being sent to Honeybadger.
-        </p>
       </main>
 
       <style>{`
