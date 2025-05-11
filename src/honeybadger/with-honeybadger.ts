@@ -15,16 +15,16 @@ function configure() {
 }
 
 
-export function withHoneybadger(handler: (...args: any[]) => Promise<any>) {
+export function withHoneybadger(handler: (...args: never[]) => Promise<never>) {
     configure();
-  return new Proxy(handler, {
-    apply: async (target, thisArg, args) => {
-      try {
-        return await Reflect.apply(target, thisArg, args);
-      } catch (error) {
-        await Honeybadger.notifyAsync(error as Error);
-        throw error; // Re-throw the error after reporting it
-      }
-    },
-  });
+    return new Proxy(handler, {
+        apply: async (target, thisArg, args) => {
+            try {
+                return await Reflect.apply(target, thisArg, args);
+            } catch (error) {
+                await Honeybadger.notifyAsync(error as Error);
+                throw error; // Re-throw the error after reporting it
+            }
+        },
+    });
 }
