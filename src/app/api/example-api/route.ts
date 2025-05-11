@@ -12,6 +12,9 @@ class HBExampleError extends Error {
 
 // A faulty API route to test error monitoring
 export const GET = withHoneybadger(async () => {
+
+  console.log("GET Route Handler");
+
   throw new HBExampleError("This error is raised on the backend called by the example page.");
 
   return NextResponse.json({ data: "Testing HB Error..." });
