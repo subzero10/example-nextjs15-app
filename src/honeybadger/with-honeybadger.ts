@@ -1,4 +1,5 @@
 import Honeybadger from "@honeybadger-io/js";
+import { NextRequest, NextResponse } from "next/server";
 
 function configure() {
     if (Honeybadger.config.apiKey?.length > 0) {
@@ -14,8 +15,7 @@ function configure() {
     })
 }
 
-
-export function withHoneybadger(handler: (...args: never[]) => Promise<never>) {
+export function withHoneybadger(handler: (req: NextRequest | Request, ...args: unknown[]) => Promise<NextResponse>) {
     configure();
     return new Proxy(handler, {
         apply: async (target, thisArg, args) => {
