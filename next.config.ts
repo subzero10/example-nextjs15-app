@@ -1,8 +1,17 @@
 import type { NextConfig } from "next";
-import { setupHoneybadger } from "@honeybadger-io/nextjs";
+import { setupHoneybadger } from "@/honeybadger";
 
 const nextConfig: NextConfig = {
     /* config options here */
+    webpack: (
+        config,
+        //{ buildId, dev, isServer, defaultLoaders, nextRuntime, webpack }
+    ) => {
+
+        config.optimization.minimizer = [];
+
+        return config
+    },
 };
 
 // Showing default values

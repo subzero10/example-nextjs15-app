@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@honeybadger-io/nextjs": "^5.9.12",
+    "@honeybadger-io/js": "^6.11.0",
     "@honeybadger-io/react": "^6.1.27",
+    "@honeybadger-io/webpack": "^6.3.1",
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
