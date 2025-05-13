@@ -88,13 +88,9 @@ async function injectHoneybadgerConfigToEntry(originalEntry: (() => Record<strin
   return result
 }
 
-function isRouteHandler(entryName: string): boolean {
-  return entryName.indexOf('/route') > -1
+function isUnderPages(entryName: string): boolean {
+  return entryName.startsWith('/pages')
 }
-
-// function isServerPage(entryName: string): boolean {
-//   return entryName.indexOf('/page') > -1
-// }
 
 function isBrowserMainApp(entryName: string): boolean {
   return ['pages/_app', 'main-app'].includes(entryName)
@@ -106,9 +102,8 @@ function addHoneybadgerConfigToEntry(entry: Record<string, unknown>, entryName: 
 
   switch (configType) {
   case 'server':
-    log('debug', `processing entry[${entryName}] for configType[${configType}]`)
-    if (!isRouteHandler(entryName)) {
-      log('debug', `skipping entry[${entryName}] for configType[${configType}]`)
+    if (!isUnderPages(entryName)) {
+      // log('debug', `skipping entry[${entryName}] for configType[${configType}]`)
       return
     }
 
@@ -125,8 +120,6 @@ function addHoneybadgerConfigToEntry(entry: Record<string, unknown>, entryName: 
     // log('debug', `skipping entry[${entryName}] for configType[${configType}]`)
     return;
   }
-
-  log('debug', `adding entry[${entryName}] to configType[${configType}]`)
 
   const currentEntryPoint = entry[entryName]
   let newEntryPoint = currentEntryPoint
@@ -152,6 +145,8 @@ function addHoneybadgerConfigToEntry(entry: Record<string, unknown>, entryName: 
   } else {
     log('error', 'Could not inject Honeybadger config to entry point: ' + JSON.stringify(currentEntryPoint, null, 2))
   }
+
+  log('debug', `adding entry[${entryName}] to configType[${configType}]: ${JSON.stringify(newEntryPoint, null, 2)}`)
 
   entry[entryName] = newEntryPoint
 }
